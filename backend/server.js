@@ -1,6 +1,7 @@
-const app = require("./app")
+const app = require("./app");
+
 // handling uncaught Exception
-process.on("uncaughtException",(err) => {
+process.on("uncaughtException", (err) => {
     console.log(`Error: ${err.message}`);
     console.log(`shutting down the server for handling uncaught exception`);
 })
@@ -13,7 +14,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 }
 
 // create server
-const server = app.listen(process.env.PORT, ()=>{
+const server = app.listen(process.env.PORT, () => {
     console.log(`Server is running on http://localhost:${process.env.PORT}`);
 })
 
