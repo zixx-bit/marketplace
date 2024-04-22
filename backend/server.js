@@ -1,5 +1,7 @@
-const app = require("./app");
+import {PORT} from 'config/.env';
 
+const app = require("./app");
+import {PORT} from 'config/.env';
 // handling uncaught Exception
 process.on("uncaughtException", (err) => {
     console.log(`Error: ${err.message}`);
@@ -19,7 +21,6 @@ if (process.env.NODE_ENV !== "production") {
         path:"backend/config/.env"
     })    
 }
-
 
 
 // unhandled promise rejection
