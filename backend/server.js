@@ -1,4 +1,5 @@
 const app = require("./app");
+const connectDatabase = require("./db/Database");
 
 // handling uncaught Exception
 process.on("uncaughtException", (err) => {
@@ -6,6 +7,9 @@ process.on("uncaughtException", (err) => {
     console.log(`shutting down the server for handling uncaught exception`);
 
 })
+
+// connect to database
+connectDatabase()
 
 // create server
 // const PORT = app.listen(process.env.PORT || 30000);
