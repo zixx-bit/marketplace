@@ -7,6 +7,7 @@ const bodyParser = require ("body-parser");
 
 app.use(express.json());
 app.use(cookieParser());
+app.use("/", express.static("uploads"));
 app.use(bodyParser.urlencoded({extended:true}));
 // app.use(fileUpload({useTempFiles: true}));
 
@@ -16,6 +17,10 @@ if (process.env.NODE_ENV !== "production"){
         path:"backend/config/.env"
     })
 }
+// import routes 
+const user = require("./controller/userController");
+
+app.use("/api/v2/user", user);
 
 // error handling
 app.use(ErrorHandler);
