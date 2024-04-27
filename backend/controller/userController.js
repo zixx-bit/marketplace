@@ -5,8 +5,8 @@ const { upload } = require("../multer");
 const ErrorHandler = require("../utils/ErrorHandler");
 const router = express.Router();
 
-router.post("/create-user", upload.single("file"), async(req, res,next) =>{
-    const {name, email, password} =req.body;
+router.post("/create-user", upload.single("file"), async(req, res, next) =>{
+    const {name, email, password} = req.body;
     const userEmail = await User.findOne({email});
 
     if (userEmail) {
@@ -15,7 +15,6 @@ router.post("/create-user", upload.single("file"), async(req, res,next) =>{
 
     const filename = req.file.filename;
     const fileUrl = path.join(filename);
-
      
     const user = {
         name: name,
