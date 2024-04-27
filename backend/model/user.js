@@ -1,6 +1,7 @@
 const mongoose = require ("mongoose");
 const bcrypt = require ("bcrypt");
 const jwt = require ("jsonwebtoken");
+const crypto = require ("crypto")
 
 const userSchema = new mongoose.Schema ({
     name:{
@@ -9,12 +10,12 @@ const userSchema = new mongoose.Schema ({
     },
     email:{
         type: String,
-        required:[true, "Please enter your email"],
+        required:[true, "Please enter your email address"],
     },
     password:{
         type: String,
         required:[true, "Please enter your password"],
-        minLength:[4, "Password should be greater than 4 characters"],
+        minLength:[6, "Password should be greater than 6 characters"],
         select:false,
     },
     phoneNumber:{

@@ -3,7 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
-import axios from 'axios';
+import axios from "axios";
 import { server } from "../../server";
 
 const Signup = () => {
@@ -22,7 +22,8 @@ const Signup = () => {
 
   
   const handleSubmit = async(e) => {
-    const config = {headers: {"Content-Type" :"multipart/form-data"}};
+    e.preventDefault ();
+    const config = {headers: {"Content-Type": "multipart/form-data"}};
 
     const newForm = new FormData();
     
@@ -31,7 +32,11 @@ const Signup = () => {
     newForm.append ("email", email);
     newForm.append ("password", password);
 
-    axios.post(`${server}/user/create-user`, newForm, config)
+    axios.post(`${server}/user/create-user`, newForm, config).then((res) =>{
+      console.log(res);
+    }).catch((err)=>{
+      console.log(err);
+    })
   };
 
   // const[rememberMe, setRememberMe] = useState("ml-2 block text-sm  border-blue-600 text-gray-300");
