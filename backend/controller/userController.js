@@ -23,6 +23,12 @@ router.post("/create-user", upload.single("file"), async(req, res, next) =>{
         avatar: fileUrl,
     };
 
+    const newUser = User.create(user);
+    res.status(201).json({
+        success: true,
+        newUser,
+    })
+
     console.log(user)
 })
 
