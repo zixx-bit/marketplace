@@ -10,6 +10,7 @@ router.post("/create-user", upload.single("file"), async(req, res, next) =>{
     const userEmail = await User.findOne({email});
 
     if (userEmail) {
+        const filename = req.file.filename
         return next(new ErrorHandler("user already exists", 400));
     }
 
@@ -22,14 +23,21 @@ router.post("/create-user", upload.single("file"), async(req, res, next) =>{
         password: password, 
         avatar: fileUrl,
     };
-
-    const newUser = User.create(user);
+    
+    try { 
+    const newUser =await  User.create(user);
     res.status(201).json({
         success: true,
         newUser,
-    })
+    });
 
-    console.log(user)
+    console.log(user)        
+        
+    } catch (error) {
+        return next(new ErrorHandler("Error creating user", 400));
+      
+    }
+    
 })
 
 module.exports = router;

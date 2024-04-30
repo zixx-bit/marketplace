@@ -19,11 +19,11 @@ const userSchema = new mongoose.Schema ({
         select:false,
     },
     phoneNumber:{
-        type:Number,
+        type: Number,
     },
     role:{
-        type:String,
-        default:"user",
+        type: String,
+        default: "user",
     },
     avatar:{
         public_id:{
@@ -31,17 +31,16 @@ const userSchema = new mongoose.Schema ({
             required: true,
         },
         url:{
-            type:String,
-            required:true,
+            type: String,
+            required: true,
         }
     },
     createdAt:{
         type: Date,
-        default:Date.now(),
+        default: Date.now,
     },
-
   
-})
+});
 
 // hash password 
 userSchema.pre("save", async function ( next){
