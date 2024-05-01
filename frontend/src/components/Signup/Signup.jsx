@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -12,32 +13,36 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [avatar, setAvatar] = useState(null);
-
-
-
+  const navigate = useNavigate()
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     setAvatar(file);
   };
 
-  
-  const handleSubmit = async(e) => {
-    e.preventDefault ();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const config = {headers: {"Content-Type": "multipart/form-data"}};
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
 
     const newForm = new FormData();
-    
-    newForm.append ("file", avatar); 
-    newForm.append ("name", name);
-    newForm.append ("email", email);
-    newForm.append ("password", password);
 
-    axios.post(`${server}/user/create-user`, newForm, config).then((res) =>{
-      console.log(res);
-    }).catch((err)=>{
-      console.log(err);
-    })
+    newForm.append("file", avatar);
+    newForm.append("name", name);
+    newForm.append("email", email);
+    newForm.append("password", password);
+
+    axios
+      .post(`${server}/user/create-user`, newForm, config)
+      .then((res) => {
+        if (res.data.success === true) {
+          navigate("/")
+          
+        }
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   // const[rememberMe, setRememberMe] = useState("ml-2 block text-sm  border-blue-600 text-gray-300");

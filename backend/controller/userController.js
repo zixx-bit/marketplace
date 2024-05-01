@@ -5,6 +5,7 @@ const { upload } = require("../multer");
 const ErrorHandler = require("../utils/ErrorHandler");
 const router = express.Router();
 const fs = require("fs");
+const jwt = require("jsonwebtoken");
 
 router.post("/create-user", upload.single("file"), async(req, res, next) =>{
     const {name, email, password} = req.body;
@@ -15,7 +16,7 @@ router.post("/create-user", upload.single("file"), async(req, res, next) =>{
         const filePath = `uploads/${filename}`;
         fs.unlink(filePath, (error) =>{
             if (error) {
-                console.log(error);
+                console.log(error); 
                 res.status(500).json({message: "Error deleteing file!"})
             }else{
                 res.json({message: "File deleted successfully"})
@@ -35,20 +36,27 @@ router.post("/create-user", upload.single("file"), async(req, res, next) =>{
         avatar: fileUrl,
     };
     
-    try { 
-    const newUser =await  User.create(user);
-    res.status(201).json({
-        success: true,
-        newUser,
-    });
+    // try { 
+    // const newUser =await  User.create(user);
+    // res.status(201).json({
+    //     success: true,
+    //     newUser,
+    // });
 
-    console.log(user)        
+    // console.log(user)        
         
-    } catch (error) {
-        return next(new ErrorHandler(`Error creating user${error}`, 400));
+    // } catch (error) {
+    //     return next(new ErrorHandler(`Error creating user${error}`, 400));
       
-    }
+    // }
     
-})
+    const activationToken = createActivationToken(user);
+    const createActivationToken = (user) =>{
+        return jwt.sign(user, process.env.ACTIVATION_SECRET, {
+            expiresIn: "5m",
+        })
+    }
+});
+
 
 module.exports = router;
