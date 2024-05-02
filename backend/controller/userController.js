@@ -35,6 +35,13 @@ router.post("/create-user", upload.single("file"), async(req, res, next) =>{
         password: password, 
         avatar: fileUrl,
     };
+    const activationToken = createActivationToken(user);
+    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+        try {
+            
+        } catch (error) {
+            return next(new ErrorHandler(error.message, 500))            
+        }
     
     // try { 
     // const newUser =await  User.create(user);
@@ -50,13 +57,16 @@ router.post("/create-user", upload.single("file"), async(req, res, next) =>{
       
     // }
     
-    const activationToken = createActivationToken(user);
-    const createActivationToken = (user) =>{
-        return jwt.sign(user, process.env.ACTIVATION_SECRET, {
-            expiresIn: "5m",
-        });
-    }
+  
 });
+
+// create activation token 
+const activationToken = createActivationToken(user);
+const createActivationToken = (user) =>{
+    return jwt.sign(user, process.env.ACTIVATION_SECRET, {
+        expiresIn: "5m",
+    });
+}
 
 
 module.exports = router;
