@@ -17,4 +17,7 @@
         subject:options.subject,
         text: options.message,
     }
+
+    await transporter.sendMail(mailOptions)
  }
+ module.exports = sendMail;
