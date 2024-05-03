@@ -6,6 +6,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const router = express.Router();
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
+const sendMail = require("../utils/sendMail");
 
 router.post("/create-user", upload.single("file"), async(req, res, next) =>{
     const {name, email, password} = req.body;
@@ -38,6 +39,11 @@ router.post("/create-user", upload.single("file"), async(req, res, next) =>{
     const activationToken = createActivationToken(user);
     const activationUrl = `http://localhost:3000/activation/${activationToken}`;
         try {
+            await sendMail({
+                email: user.email,
+                subject: "ACTIVATE YOUR ACCOUNT",
+                message: `Hello ${user.name}, please click on the link to activate your account: ${activationUrl}`, 
+            })
             
         } catch (error) {
             return next(new ErrorHandler(error.message, 500))            
