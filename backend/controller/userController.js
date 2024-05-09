@@ -36,43 +36,28 @@ router.post("/create-user", upload.single("file"), async(req, res, next) =>{
         password: password, 
         avatar: fileUrl,
     };
-    const activationToken = createActivationToken(user);
-    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
-        try {
-            await sendMail({
-                email: user.email,
-                subject: "ACTIVATE YOUR ACCOUNT",
-                message: `Hello ${user.name}, please click on the link to activate your account: ${activationUrl}`, 
-            })
+   
+        const activationToken = createActivationToken(user);
+
+        const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+            try {
+                await sendMail({
+                    email: user.email,
+                    subject: "ACTIVATE YOUR ACCOUNT",
+                    message: `Hello ${user.name}, please click on the link to activate your account: ${activationUrl}`, 
+                })
+                
+            } catch (error) {
+                return next(new ErrorHandler(error.message, 500))            
+            }
             
-        } catch (error) {
-            return next(new ErrorHandler(error.message, 500))            
-        }
-    
-    // try { 
-    // const newUser =await  User.create(user);
-    // res.status(201).json({
-    //     success: true,
-    //     newUser,
-    // });
 
-    // console.log(user)        
-        
-    // } catch (error) {
-    //     return next(new ErrorHandler(`Error creating user${error}`, 400));
-      
-    // }
-    
-  
+             // create activation token 
+    const createActivationToken = (user) =>{
+        return jwt.sign(user, process.env.ACTIVATION_SECRET, {
+            expiresIn: "5m",
+        });
+    };
 });
-
-// create activation token 
-const activationToken = createActivationToken(user);
-const createActivationToken = (user) =>{
-    return jwt.sign(user, process.env.ACTIVATION_SECRET, {
-        expiresIn: "5m",
-    });
-}
-
 
 module.exports = router;
