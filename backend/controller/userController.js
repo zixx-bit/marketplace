@@ -26,7 +26,6 @@ router.post("/create-user", upload.single("file"), async(req, res, next) =>{
 
         return next(new ErrorHandler("user already exists", 400));
     }
-
     const filename = req.file.filename;
     const fileUrl = path.join(filename);
      
@@ -49,8 +48,7 @@ router.post("/create-user", upload.single("file"), async(req, res, next) =>{
                 
             } catch (error) {
                 return next(new ErrorHandler(error.message, 500))            
-            }
-            
+            }          
 
              // create activation token 
     const createActivationToken = (user) =>{
